@@ -14,8 +14,8 @@ namespace Project.V6
     {
         private ClinicRepository_GID _repository_GID;
         private List<PatientRecord_GID> _patients_GID;
-        private string _csvPath_GID;
         private ClinicStatistics_GID _statistics_GID;
+        private string _csvPath_GID;
 
         private void UpdateStatistics_GID()
         {
@@ -36,15 +36,17 @@ namespace Project.V6
         {
             InitializeComponent();
 
+            toolButtonEditPatient_GID.Click += toolButtonEditPatient_GID_Click;
+
             _repository_GID = new ClinicRepository_GID();
+            _statistics_GID = new ClinicStatistics_GID();
+
             _csvPath_GID = Path.Combine(Application.StartupPath, "patients_GID.csv");
-
             _repository_GID.EnsureCsvExists(_csvPath_GID);
-            _patients_GID = _repository_GID.LoadFromCsv(_csvPath_GID);
 
+            _patients_GID = _repository_GID.LoadFromCsv(_csvPath_GID);
             dataGridViewPatients_GID.DataSource = _patients_GID;
 
-            _statistics_GID = new ClinicStatistics_GID();
             UpdateStatistics_GID();
             UpdateChartData_GID();
         }
@@ -70,30 +72,21 @@ namespace Project.V6
 
         private void toolButtonAddPatient_GID_Click(object sender, EventArgs e)
         {
-            var newPatient = new PatientRecord_GID
+            using var form = new EditPatientForm_GID();
+
+            if (form.ShowDialog(this) == DialogResult.OK)
             {
-                LastName = "Тестов",
-                FirstName = "Тест",
-                MiddleName = "Тестович",
-                BirthDate = new DateTime(2000, 1, 1),
-                DoctorFullName = "Иванов И.И.",
-                DoctorPosition = "Терапевт",
-                DoctorSpecialization = "Терапия",
-                Diagnosis = "ОРВИ",
-                IsAmbulatory = true,
-                DisabilityDays = 7,
-                IsDispensary = false,
-                Note = "Добавлен кнопкой"
-            };
+                var record = form.ResultRecord_GID;
 
-            _repository_GID.AddRecord(_patients_GID, newPatient);
-            _repository_GID.SaveToCsv(_csvPath_GID, _patients_GID);
+                _repository_GID.AddRecord(_patients_GID, record);
+                _repository_GID.SaveToCsv(_csvPath_GID, _patients_GID);
 
-            dataGridViewPatients_GID.DataSource = null;
-            dataGridViewPatients_GID.DataSource = _patients_GID;
+                dataGridViewPatients_GID.DataSource = null;
+                dataGridViewPatients_GID.DataSource = _patients_GID;
 
-            UpdateStatistics_GID();
-            UpdateChartData_GID();
+                UpdateStatistics_GID();
+                UpdateChartData_GID();
+            }
         }
 
         private void toolButtonDeletePatient_GID_Click(object sender, EventArgs e)
@@ -121,6 +114,33 @@ namespace Project.V6
 
             UpdateStatistics_GID();
             UpdateChartData_GID();
+        }
+
+        private void toolButtonEditPatient_GID_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewPatients_GID.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выберите пациента для редактирования.");
+                return;
+            }
+
+            var selected = (PatientRecord_GID)dataGridViewPatients_GID.SelectedRows[0].DataBoundItem;
+
+            using var form = new EditPatientForm_GID(selected);
+
+            if (form.ShowDialog(this) == DialogResult.OK)
+            {
+                var updated = form.ResultRecord_GID;
+
+                _repository_GID.UpdateRecord(_patients_GID, updated);
+                _repository_GID.SaveToCsv(_csvPath_GID, _patients_GID);
+
+                dataGridViewPatients_GID.DataSource = null;
+                dataGridViewPatients_GID.DataSource = _patients_GID;
+
+                UpdateStatistics_GID();
+                UpdateChartData_GID();
+            }
         }
 
         private void toolButtonSearch_GID_Click(object sender, EventArgs e)

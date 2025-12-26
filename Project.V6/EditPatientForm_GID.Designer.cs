@@ -305,6 +305,7 @@
             buttonOk_GID.TabIndex = 0;
             buttonOk_GID.Text = "Сохранить";
             buttonOk_GID.UseVisualStyleBackColor = true;
+            buttonOk_GID.Click += buttonOk_GID_Click;
             // 
             // EditPatientForm_GID
             // 

@@ -98,6 +98,11 @@ namespace Tyuiu.GroshevID.Sprint7.Lib.Services
             records.GroupBy(r => r.DoctorFullName)
                    .ToDictionary(g => g.Key, g => g.Count());
 
+        public Dictionary<string, int> GetCountByDiagnosis(List<PatientRecord_GID> records) =>
+    records.GroupBy(r => r.Diagnosis)
+           .Where(g => !string.IsNullOrWhiteSpace(g.Key))
+           .ToDictionary(g => g.Key, g => g.Count());
+
         // ---------- HELPERS ----------
 
         private static bool IsHeaderLine_GID(string line) =>

@@ -71,11 +71,11 @@
             dataGridViewPatients_GID.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewPatients_GID.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewPatients_GID.Dock = DockStyle.Fill;
-            dataGridViewPatients_GID.Location = new Point(0, 24);
+            dataGridViewPatients_GID.Location = new Point(0, 99);
             dataGridViewPatients_GID.Name = "dataGridViewPatients_GID";
             dataGridViewPatients_GID.ReadOnly = true;
             dataGridViewPatients_GID.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewPatients_GID.Size = new Size(884, 537);
+            dataGridViewPatients_GID.Size = new Size(464, 402);
             dataGridViewPatients_GID.TabIndex = 0;
             dataGridViewPatients_GID.CellContentClick += dataGridViewPatients_GID_CellContentClick;
             // 
@@ -305,11 +305,11 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(884, 561);
+            Controls.Add(dataGridViewPatients_GID);
             Controls.Add(panelChart_GID);
             Controls.Add(panelStatistics_GID);
             Controls.Add(panelSearchFilter_GID);
             Controls.Add(toolStripMain_GID);
-            Controls.Add(dataGridViewPatients_GID);
             Controls.Add(menuStripMain_GID);
             MainMenuStrip = menuStripMain_GID;
             MinimumSize = new Size(900, 600);
